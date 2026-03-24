@@ -36,33 +36,6 @@
     }
     .loading-overlay.hidden { opacity: 0; pointer-events: none; transition: opacity 0.5s; }
 
-    /* Кнопка названия маршрута */
-    #routeNameBtn {
-        position: absolute;
-        top: calc(16px + env(safe-area-inset-top));
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 9005;
-        background: var(--dark-panel);
-        backdrop-filter: var(--panel-blur);
-        -webkit-backdrop-filter: var(--panel-blur);
-        padding: 10px 20px;
-        border-radius: 100px;
-        border: 1px solid var(--border);
-        color: var(--btn-txt);
-        font-size: 14px;
-        font-weight: 700;
-        max-width: 90%;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.22);
-        text-align: center;
-        cursor: pointer;
-        display: none;
-    }
-    #routeNameBtn.visible { display: block; }
-
     /* Кнопка списка точек - слева от меню */
     #listBtn {
         position: absolute;
@@ -482,11 +455,8 @@
 <video id="v" playsinline muted loop></video>
 <div id="map"></div>
 
-<!-- Кнопка названия маршрута -->
-<div id="routeNameBtn">Маршрут не выбран</div>
-
 <!-- Кнопка списка точек -->
-<button id="listBtn" onclick="togglePointsList()">
+<button id="listBtn">
     <svg viewBox="0 0 24 24"><path d="M4 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm0-6c-.83 0-1.5.67-1.5 1.5S3.17 7.5 4 7.5 5.5 6.83 5.5 6 4.83 4.5 4 4.5zm0 12c-.83 0-1.5.68-1.5 1.5s.68 1.5 1.5 1.5 1.5-.68 1.5-1.5-.67-1.5-1.5-1.5zM7 19h14v-2H7v2zm0-6h14v-2H7v2zm0-8v2h14V5H7z"/></svg>
 </button>
 
@@ -1064,8 +1034,6 @@ function processRouteData(data, name) {
     APP.routeName = name;
 
     // Показываем UI
-    document.getElementById('routeNameBtn').textContent = name;
-    document.getElementById('routeNameBtn').classList.add('visible');
     document.getElementById('hud').classList.add('active');
     document.getElementById('telemetryPanel').classList.add('visible');
     document.getElementById('jsonModal').classList.add('hidden');
@@ -1145,8 +1113,8 @@ ymaps.ready(() => {
     initGeolocation();
 
     // Обработчики UI
+    document.getElementById('listBtn').addEventListener('click', togglePointsList);
     document.getElementById('locateBtn').addEventListener('click', toggleAutoCenter);
-    document.getElementById('routeNameBtn').addEventListener('click', togglePointsList);
     document.getElementById('closeCommentBtn').addEventListener('click', (e) => {
         e.stopPropagation();
         document.getElementById('commentBlock').classList.remove('visible');
