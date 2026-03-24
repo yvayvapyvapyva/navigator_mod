@@ -360,11 +360,15 @@ const $ = id => document.getElementById(id);
 // ============================================
 // УВЕДОМЛЕНИЯ
 // ============================================
+let toastTimer = null;
+
 function showToast(text, type = 'info', duration = 2000) {
     const el = $('toast');
     el.textContent = text;
     el.className = `toast ${type} show`;
-    setTimeout(() => el.classList.remove('show'), duration);
+    
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), duration);
 }
 
 // ============================================
@@ -679,8 +683,8 @@ async function playCommand(text) {
 }
 
 async function preloadAudio() {
-    if (!('caches' in window)) { showToast('Готов к работе', 'success'); return; }
-    showToast('Загрузка аудио...', 'info');
+    if (!('caches' in window)) return;
+    
     const cache = await caches.open('route-audio-v1');
     
     // Кэшируем все возможные команды
@@ -689,21 +693,25 @@ async function preloadAudio() {
     
     let loaded = 0;
     let failed = 0;
+    
     for (const path of uniquePaths) {
         try {
             const res = await fetch(path);
             if (res.ok) await cache.put(path, res);
             else failed++;
         } catch (e) { 
-            // Файл может отсутствовать - это нормально
             failed++;
         }
         loaded++;
-        showToast(`Аудио: ${Math.round((loaded / uniquePaths.length) * 100)}%`, 'info');
     }
     
-    console.log(`Закешировано: ${loaded - failed}/${uniquePaths.length} файлов`);
-    showToast('Готов к работе', 'success');
+    const cachedCount = loaded - failed;
+    console.log(`Закешировано: ${cachedCount}/${uniquePaths.length} файлов`);
+    
+    // Показываем сообщение только если загрузили хоть что-то
+    if (cachedCount > 0) {
+        showToast('Аудио команды загружены', 'success', 2000);
+    }
 }
 
 // ============================================
