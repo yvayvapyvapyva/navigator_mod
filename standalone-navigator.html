@@ -278,20 +278,10 @@
 
 <div id="jsonModal">
     <div class="modal-sheet">
-        <div class="modal-title">🧭 Загрузка маршрута</div>
-        <div>
-            <label style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.8);">URL JSON файла:</label>
-            <input type="text" id="jsonUrlInput" class="modal-input" placeholder="https://example.com/route.json">
-        </div>
-        <div class="or-divider">— ИЛИ —</div>
-        <div>
-            <label style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.8);">Вставьте JSON маршрут:</label>
-            <textarea id="jsonTextInput" class="modal-textarea" placeholder='[{"id":1,"color":"Gold","pts":[[56.34,43.93],[56.341,43.931]],"cmd":"На перекрестке повернем налево","comm":""}]'></textarea>
-        </div>
-        <div class="modal-hint">💡 Также можно передать URL через параметр: <code>?url=https://example.com/route.json</code></div>
-        <div class="modal-buttons">
-            <button id="loadUrlBtn" class="modal-btn modal-btn-blue">Загрузить из URL</button>
-            <button id="loadTextBtn" class="modal-btn modal-btn-green">Запустить навигатор</button>
+        <div class="modal-title">Введите название маршрута</div>
+        <input type="text" id="routeNameInput" class="modal-input" placeholder="" style="margin-top: 16px;">
+        <div class="modal-buttons" style="margin-top: 16px;">
+            <button id="loadRouteBtn" class="modal-btn modal-btn-green">Загрузить</button>
         </div>
     </div>
 </div>
@@ -744,31 +734,23 @@ function navCheckTriggers() {
 // ============================================
 // ЗАГРУЗКА МАРШРУТА
 // ============================================
-async function loadRouteFromUrl(url) {
+const YANDEX_CLOUD_FUNCTION_URL = 'https://functions.yandexcloud.net/d4ekerqua63o9npij6ro';
+
+async function loadRouteFromCloud(routeName) {
     try {
         showToast('Загрузка маршрута...', 'info');
-        console.log('Загрузка URL:', url);
+        console.log('Загрузка маршрута:', routeName);
+        const url = `${YANDEX_CLOUD_FUNCTION_URL}?m=${encodeURIComponent(routeName)}`;
+        console.log('URL запроса:', url);
         const res = await fetch(url);
         console.log('Ответ:', res.status, res.ok);
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const data = await res.json();
         console.log('Данные:', data);
-        processRouteData(data, url.split('/').pop().replace('.json', ''));
+        processRouteData(data, routeName);
     } catch (e) {
         console.error('Ошибка загрузки:', e);
         showToast('Ошибка загрузки: ' + e.message, 'error', 4000);
-    }
-}
-
-function loadRouteFromText(text) {
-    try {
-        console.log('Парсинг JSON:', text.substring(0, 100) + '...');
-        const data = JSON.parse(text);
-        console.log('Данные:', data);
-        processRouteData(data, 'Пользовательский маршрут');
-    } catch (e) {
-        console.error('Ошибка JSON:', e);
-        showToast('Ошибка JSON: ' + e.message, 'error', 4000);
     }
 }
 
@@ -871,15 +853,10 @@ ymaps.ready(() => {
         e.stopPropagation();
         $('commentBlock').classList.remove('visible');
     });
-    $('loadUrlBtn').addEventListener('click', () => {
-        const url = $('jsonUrlInput').value.trim();
-        if (!url) { showToast('Введите URL', 'error'); return; }
-        loadRouteFromUrl(url);
-    });
-    $('loadTextBtn').addEventListener('click', () => {
-        const text = $('jsonTextInput').value.trim();
-        if (!text) { showToast('Вставьте JSON', 'error'); return; }
-        loadRouteFromText(text);
+    $('loadRouteBtn').addEventListener('click', () => {
+        const routeName = $('routeNameInput').value.trim();
+        if (!routeName) { showToast('Введите название маршрута', 'error'); return; }
+        loadRouteFromCloud(routeName);
     });
 
     // Клик по карте
@@ -889,10 +866,10 @@ ymaps.ready(() => {
     });
 
     // URL параметр
-    const jsonUrl = new URLSearchParams(window.location.search).get('url');
-    if (jsonUrl) {
-        $('jsonUrlInput').value = jsonUrl;
-        loadRouteFromUrl(jsonUrl);
+    const routeParam = new URLSearchParams(window.location.search).get('route');
+    if (routeParam) {
+        $('routeNameInput').value = routeParam;
+        loadRouteFromCloud(routeParam);
     }
     $('loading').classList.add('hidden');
 });
