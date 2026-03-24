@@ -873,10 +873,9 @@ ymaps.ready(() => {
         $('pointsList').style.display = 'none';
     });
 
-    // URL параметр
-    const routeParam = new URLSearchParams(window.location.search).get('route');
+    // URL параметр m - автоматическая загрузка маршрута
+    const routeParam = new URLSearchParams(window.location.search).get('m');
     if (routeParam) {
-        $('routeNameInput').value = routeParam;
         loadRouteFromCloud(routeParam);
     }
     $('loading').classList.add('hidden');
