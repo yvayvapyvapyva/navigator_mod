@@ -12,17 +12,14 @@
         --btn-txt: #ffffff;
         --border: rgba(255,255,255,0.25);
         --panel-blur: blur(22px);
-        --twa-header-height: 44px;
         --target-lime: #00FF00;
     }
-
     html, body {
         margin: 0; padding: 0; height: 100%; width: 100%;
         font-family: -apple-system, sans-serif; overflow: hidden;
         background: var(--bg); position: fixed; touch-action: none;
         color: var(--btn-txt);
     }
-
     #map { position: absolute; inset: 0; z-index: 1; }
     [class*="-copyrights-pane"], [class*="-map-copyrights-promo"], [class*="-controls-pane"] { display: none !important; }
 
@@ -36,75 +33,41 @@
     }
     .loading-overlay.hidden { opacity: 0; pointer-events: none; transition: opacity 0.5s; }
 
-    /* Кнопка списка точек - слева от меню */
-    #listBtn {
-        position: absolute;
-        top: calc(16px + env(safe-area-inset-top) + 70px);
-        left: 16px;
-        z-index: 9005;
+    /* Общие стили кнопок */
+    .circle-btn {
+        position: absolute; z-index: 9005;
         background: var(--dark-panel);
         backdrop-filter: var(--panel-blur);
         -webkit-backdrop-filter: var(--panel-blur);
-        width: 56px; height: 56px;
-        border-radius: 50%;
+        width: 56px; height: 56px; border-radius: 50%;
         border: 1px solid var(--border);
         color: var(--btn-txt);
         cursor: pointer;
         transition: transform 0.15s, background 0.15s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: flex; align-items: center; justify-content: center;
         box-shadow: 0 10px 25px rgba(0,0,0,0.22);
     }
-    #listBtn svg { fill: currentColor; width: 24px; height: 24px; }
-    #listBtn:active { transform: scale(0.95); background: rgba(30,32,40,0.9); }
-
-    /* Кнопка геолокации */
-    #locateBtn {
-        position: absolute;
-        top: calc(16px + env(safe-area-inset-top) + 70px);
-        right: 16px;
-        z-index: 9005;
-        background: var(--dark-panel);
-        backdrop-filter: var(--panel-blur);
-        -webkit-backdrop-filter: var(--panel-blur);
-        width: 56px; height: 56px;
-        border-radius: 50%;
-        border: 1px solid var(--border);
-        color: var(--btn-txt);
-        cursor: pointer;
-        transition: transform 0.15s, background 0.15s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.22);
-    }
-    #locateBtn svg { fill: currentColor; width: 24px; height: 24px; }
-    #locateBtn:active { transform: scale(0.95); background: rgba(30,32,40,0.9); }
-    #locateBtn.active { background: rgba(52,199,89,0.42); border-color: rgba(103,255,153,0.45); }
+    .circle-btn svg { fill: currentColor; width: 24px; height: 24px; }
+    .circle-btn:active { transform: scale(0.95); background: rgba(30,32,40,0.9); }
+    .circle-btn.active { background: rgba(52,199,89,0.42); border-color: rgba(103,255,153,0.45); }
+    #listBtn { top: calc(16px + env(safe-area-inset-top) + 70px); left: 16px; }
+    #locateBtn { top: calc(16px + env(safe-area-inset-top) + 70px); right: 16px; }
 
     /* Телеметрия */
     #telemetryPanel {
         position: absolute;
-        top: calc(16px + env(safe-area-inset-top) + 136px);
-        right: 16px;
+        top: calc(16px + env(safe-area-inset-top) + 136px); right: 16px;
         z-index: 9005;
         background: var(--dark-panel);
         backdrop-filter: var(--panel-blur);
         -webkit-backdrop-filter: var(--panel-blur);
-        border-radius: 14px;
-        padding: 10px 14px;
-        color: white;
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        gap: 6px;
+        border-radius: 14px; padding: 10px 14px; color: white;
+        display: none; flex-direction: column; align-items: center; gap: 6px;
         border: 1px solid var(--border);
         cursor: pointer;
         box-shadow: 0 10px 25px rgba(0,0,0,0.22);
         transition: transform 0.15s, background 0.15s;
-        width: 56px;
-        box-sizing: border-box;
+        width: 56px; box-sizing: border-box;
     }
     #telemetryPanel.visible { display: flex; }
     #telemetryPanel:active { transform: scale(0.95); }
@@ -113,53 +76,37 @@
     .tel-value { font-size: 14px; font-weight: 800; text-align: center; }
     .tel-divider { height: 1px; width: 100%; background: rgba(255,255,255,0.15); margin: 4px 0; }
 
-    /* HUD - информационная панель */
+    /* HUD */
     #hud {
         position: absolute;
         bottom: calc(24px + env(safe-area-inset-bottom));
-        left: 16px;
-        right: 16px;
-        z-index: 9000;
+        left: 16px; right: 16px; z-index: 9000;
         background: var(--dark-panel);
         backdrop-filter: var(--panel-blur);
         -webkit-backdrop-filter: var(--panel-blur);
-        border-radius: 20px;
-        padding: 16px;
-        color: var(--btn-txt);
+        border-radius: 20px; padding: 16px; color: var(--btn-txt);
         border: 1px solid var(--border);
         box-shadow: 0 12px 24px rgba(0,0,0,0.22);
-        display: none;
-        flex-direction: column;
-        gap: 8px;
+        display: none; flex-direction: column; gap: 8px;
         pointer-events: auto;
-        width: calc(100% - 32px);
-        box-sizing: border-box;
+        width: calc(100% - 32px); box-sizing: border-box;
     }
     #hud.active { display: flex; }
-
     .hud-header { display: flex; align-items: flex-start; gap: 10px; }
     .hud-index {
         background: rgba(255,255,255,0.2); color: white;
         font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 6px;
     }
     .hud-cmd { font-size: 16px; font-weight: 700; flex: 1; }
-
     .hud-actions {
-        width: 100%;
-        display: flex;
-        padding-top: 8px;
-        gap: 8px;
-        align-items: center;
-        border-top: 1px solid rgba(255,255,255,0.1);
+        width: 100%; display: flex; padding-top: 8px; gap: 8px;
+        align-items: center; border-top: 1px solid rgba(255,255,255,0.1);
     }
-    .hud-stats {
-        display: flex; align-items: center; gap: 16px;
-    }
+    .hud-stats { display: flex; align-items: center; gap: 16px; }
     .hud-stats .stat-item { display: flex; flex-direction: column; align-items: center; }
     .stat-label { font-size: 9px; color: #aaa; text-transform: uppercase; font-weight: 700; }
     .stat-value { font-size: 14px; font-weight: 700; }
     .stat-value.in-range { color: var(--target-lime); }
-
     .action-icon-btn {
         width: 36px; height: 36px; border-radius: 12px;
         display: flex; align-items: center; justify-content: center;
@@ -168,34 +115,23 @@
         cursor: pointer; flex-shrink: 0;
     }
     .action-icon-btn svg { fill: #f3f4f6; width: 20px; height: 20px; }
-    .action-icon-btn.comm-btn svg { fill: #d1d5db; }
-
     #selectBtn {
-        padding: 10px 16px;
-        border-radius: 10px;
+        padding: 10px 16px; border-radius: 10px;
         border: 1px solid var(--border);
         background: rgba(52,199,89,0.42);
         border-color: rgba(103,255,153,0.45);
-        color: #fff;
-        font-size: 14px;
-        font-weight: 700;
-        cursor: pointer;
-        flex-shrink: 0;
+        color: #fff; font-size: 14px; font-weight: 700;
+        cursor: pointer; flex-shrink: 0;
         transition: transform 0.15s, background 0.15s;
         display: none;
     }
     #selectBtn:active { transform: scale(0.95); }
-
     .nav-arrow-btn {
-        width: 40px; height: 40px;
-        border-radius: 10px;
+        width: 40px; height: 40px; border-radius: 10px;
         background: rgba(255,255,255,0.2);
         border: 1px solid rgba(255,255,255,0.4);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; flex-shrink: 0;
         transition: background 0.15s, transform 0.15s;
     }
     .nav-arrow-btn svg { fill: #ffffff; width: 24px; height: 24px; filter: drop-shadow(0 0 2px rgba(0,0,0,0.8)); }
@@ -205,21 +141,15 @@
     /* Список точек */
     #pointsList {
         position: absolute;
-        top: calc(16px + env(safe-area-inset-top) + 136px);
-        left: 16px;
+        top: calc(16px + env(safe-area-inset-top) + 136px); left: 16px;
         width: calc(100% - 32px);
         background: var(--dark-panel);
         backdrop-filter: var(--panel-blur);
         -webkit-backdrop-filter: var(--panel-blur);
-        border-radius: 14px;
-        border: 1px solid var(--border);
-        z-index: 9700;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.35);
-        pointer-events: auto;
-        max-height: 60vh;
-        display: none;
-        flex-direction: column;
-        overflow: hidden;
+        border-radius: 14px; border: 1px solid var(--border);
+        z-index: 9700; box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+        pointer-events: auto; max-height: 60vh;
+        display: none; flex-direction: column; overflow: hidden;
     }
     #pointsList .header {
         padding: 12px 16px;
@@ -253,168 +183,88 @@
         color: #fff; word-wrap: break-word;
     }
 
-    /* Комментарий точки */
+    /* Комментарий */
     #commentBlock {
-        display: none;
-        margin-bottom: 10px;
-        padding: 10px;
+        display: none; margin-bottom: 10px; padding: 10px;
         background: rgba(255,149,0,0.15);
-        border-radius: 10px;
-        border: 1px solid rgba(255,149,0,0.4);
+        border-radius: 10px; border: 1px solid rgba(255,149,0,0.4);
     }
     #commentBlock.visible { display: block; }
-    #commentText {
-        font-size: 12px;
-        line-height: 1.5;
-        color: #e5e7eb;
-        white-space: pre-wrap;
-    }
+    #commentText { font-size: 12px; line-height: 1.5; color: #e5e7eb; white-space: pre-wrap; }
     #closeCommentBtn {
-        width: 20px; height: 20px;
-        border-radius: 6px;
+        width: 20px; height: 20px; border-radius: 6px;
         background: rgba(255,149,0,0.3);
         border: 1px solid rgba(255,149,0,0.5);
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        font-size: 14px;
-        line-height: 1;
-        flex-shrink: 0;
+        color: #fff; display: flex; align-items: center; justify-content: center;
+        cursor: pointer; font-size: 14px; line-height: 1; flex-shrink: 0;
     }
 
-    /* Toast уведомления */
+    /* Toast */
     #toast {
         position: fixed;
-        top: calc(env(safe-area-inset-top) + var(--twa-header-height) + 80px);
-        left: 50%;
+        top: calc(80px + env(safe-area-inset-top)); left: 50%;
         transform: translateX(-50%) translateY(-100px);
-        background: var(--dark-panel);
-        color: #ffffff;
-        padding: 14px 24px;
-        border-radius: 16px;
-        font-size: 14px;
-        z-index: 9999;
-        transition: 0.4s;
-        opacity: 0;
+        background: var(--dark-panel); color: #ffffff;
+        padding: 14px 24px; border-radius: 16px;
+        font-size: 14px; z-index: 9999;
+        transition: 0.4s; opacity: 0;
         backdrop-filter: var(--panel-blur);
         -webkit-backdrop-filter: var(--panel-blur);
-        border: 1px solid var(--border);
-        font-weight: 700;
-        max-width: 80vw;
-        white-space: pre-wrap;
-        text-align: center;
-        line-height: 1.4;
-        pointer-events: none;
+        border: 1px solid var(--border); font-weight: 700;
+        max-width: 80vw; white-space: pre-wrap;
+        text-align: center; line-height: 1.4; pointer-events: none;
     }
     #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     #toast.success { background: rgba(52,199,89,0.95); }
     #toast.error { background: rgba(255,59,48,0.95); }
     #toast.info { background: rgba(0,0,0,0.82); }
 
-    /* Wake lock video */
+    /* Wake lock */
     #v { position: fixed; width: 1px; height: 1px; opacity: 0.01; pointer-events: none; }
 
-    /* Модальное окно загрузки JSON */
+    /* Модальное окно */
     #jsonModal {
-        position: fixed;
-        inset: 0;
+        position: fixed; inset: 0;
         background: rgba(0,0,0,0.8);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         z-index: 10000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: flex; align-items: center; justify-content: center;
         padding: 20px;
     }
     #jsonModal.hidden { display: none; }
     .modal-sheet {
-        width: 100%;
-        max-width: 500px;
+        width: 100%; max-width: 500px;
         background: linear-gradient(180deg, rgba(30,32,40,0.95), rgba(20,22,30,0.95));
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        padding: 24px;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
+        border: 1px solid var(--border); border-radius: 20px;
+        padding: 24px; display: flex; flex-direction: column; gap: 16px;
         box-shadow: 0 20px 60px rgba(0,0,0,0.5);
     }
-    .modal-title {
-        font-size: 20px;
-        font-weight: 800;
-        text-align: center;
-        color: #fff;
-    }
+    .modal-title { font-size: 20px; font-weight: 800; text-align: center; color: #fff; }
     .modal-textarea {
-        width: 100%;
-        min-height: 200px;
-        background: rgba(40,42,50,0.5);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 14px;
-        color: #fff;
-        font-size: 13px;
-        font-family: monospace;
-        resize: vertical;
-        box-sizing: border-box;
-        outline: none;
+        width: 100%; min-height: 200px;
+        background: rgba(40,42,50,0.5); border: 1px solid var(--border);
+        border-radius: 12px; padding: 14px; color: #fff;
+        font-size: 13px; font-family: monospace; resize: vertical;
+        box-sizing: border-box; outline: none;
     }
     .modal-input {
-        width: 100%;
-        padding: 14px;
-        border-radius: 12px;
-        border: 1px solid var(--border);
-        background: rgba(40,42,50,0.5);
-        color: #fff;
-        font-size: 14px;
-        font-family: inherit;
-        box-sizing: border-box;
-        outline: none;
+        width: 100%; padding: 14px; border-radius: 12px;
+        border: 1px solid var(--border); background: rgba(40,42,50,0.5);
+        color: #fff; font-size: 14px; font-family: inherit;
+        box-sizing: border-box; outline: none;
     }
-    .modal-hint {
-        font-size: 12px;
-        color: rgba(255,255,255,0.5);
-    }
-    .modal-buttons {
-        display: flex;
-        gap: 12px;
-        margin-top: 8px;
-    }
+    .modal-hint { font-size: 12px; color: rgba(255,255,255,0.5); }
+    .modal-buttons { display: flex; gap: 12px; margin-top: 8px; }
     .modal-btn {
-        flex: 1;
-        padding: 14px;
-        border-radius: 12px;
-        border: none;
-        font-size: 15px;
-        font-weight: 700;
-        cursor: pointer;
+        flex: 1; padding: 14px; border-radius: 12px; border: none;
+        font-size: 15px; font-weight: 700; cursor: pointer;
         transition: transform 0.15s;
     }
     .modal-btn:active { transform: scale(0.98); }
-    .modal-btn-green {
-        background: rgba(52,199,89,0.42);
-        border: 1px solid rgba(103,255,153,0.45);
-        color: #fff;
-    }
-    .modal-btn-blue {
-        background: rgba(61,160,255,0.48);
-        border: 1px solid rgba(90,180,255,0.5);
-        color: #fff;
-    }
-    .modal-btn-muted {
-        background: rgba(40,40,45,0.3);
-        border: 1px solid var(--border);
-        color: #fff;
-    }
-    .or-divider {
-        text-align: center;
-        font-size: 12px;
-        color: rgba(255,255,255,0.5);
-        margin: 8px 0;
-    }
+    .modal-btn-green { background: rgba(52,199,89,0.42); border: 1px solid rgba(103,255,153,0.45); color: #fff; }
+    .modal-btn-blue { background: rgba(61,160,255,0.48); border: 1px solid rgba(90,180,255,0.5); color: #fff; }
+    .or-divider { text-align: center; font-size: 12px; color: rgba(255,255,255,0.5); margin: 8px 0; }
     </style>
 </head>
 <body>
@@ -424,27 +274,19 @@
     <div id="errorMsg" style="color: #FF3B30; display: none; margin-top: 10px;"></div>
 </div>
 
-<!-- Модальное окно загрузки JSON -->
 <div id="jsonModal">
     <div class="modal-sheet">
         <div class="modal-title">🧭 Загрузка маршрута</div>
-        
         <div>
             <label style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.8);">URL JSON файла:</label>
             <input type="text" id="jsonUrlInput" class="modal-input" placeholder="https://example.com/route.json">
         </div>
-        
         <div class="or-divider">— ИЛИ —</div>
-        
         <div>
             <label style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.8);">Вставьте JSON маршрут:</label>
             <textarea id="jsonTextInput" class="modal-textarea" placeholder='[{"id":1,"color":"Gold","pts":[[56.34,43.93],[56.341,43.931]],"cmd":"На перекрестке повернем налево","comm":""}]'></textarea>
         </div>
-        
-        <div class="modal-hint">
-            💡 Также можно передать URL через параметр: <code>?url=https://example.com/route.json</code>
-        </div>
-        
+        <div class="modal-hint">💡 Также можно передать URL через параметр: <code>?url=https://example.com/route.json</code></div>
         <div class="modal-buttons">
             <button id="loadUrlBtn" class="modal-btn modal-btn-blue">Загрузить из URL</button>
             <button id="loadTextBtn" class="modal-btn modal-btn-green">Запустить навигатор</button>
@@ -454,51 +296,37 @@
 
 <video id="v" playsinline muted loop></video>
 <div id="map"></div>
-
-<!-- Кнопка списка точек -->
-<button id="listBtn">
+<button id="listBtn" class="circle-btn">
     <svg viewBox="0 0 24 24"><path d="M4 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm0-6c-.83 0-1.5.67-1.5 1.5S3.17 7.5 4 7.5 5.5 6.83 5.5 6 4.83 4.5 4 4.5zm0 12c-.83 0-1.5.68-1.5 1.5s.68 1.5 1.5 1.5 1.5-.68 1.5-1.5-.67-1.5-1.5-1.5zM7 19h14v-2H7v2zm0-6h14v-2H7v2zm0-8v2h14V5H7z"/></svg>
 </button>
-
-<!-- Кнопка геолокации -->
-<button id="locateBtn">
+<button id="locateBtn" class="circle-btn">
     <svg viewBox="0 0 24 24"><path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>
 </button>
 
-<!-- Телеметрия -->
 <div id="telemetryPanel">
     <div class="tel-item"><span class="tel-label">КМ/Ч</span><span class="tel-value" id="telSpeed">0</span></div>
     <div class="tel-divider"></div>
     <div class="tel-item"><span class="tel-label">АЗ</span><span class="tel-value" id="telAz">0°</span></div>
 </div>
 
-<!-- HUD -->
 <div id="hud">
-    <!-- Комментарий точки -->
     <div id="commentBlock">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
             <div id="commentText"></div>
             <button id="closeCommentBtn">×</button>
         </div>
     </div>
-
     <div class="hud-header">
         <span class="hud-index" id="hudIndex">1</span>
         <div class="hud-cmd" id="hudCmd">Маршрут не выбран</div>
     </div>
     <div class="hud-actions">
         <button id="prevBtn" class="nav-arrow-btn" title="Предыдущая точка">
-            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
         </button>
         <div class="hud-stats">
-            <div class="stat-item">
-                <span class="stat-label">Дист</span>
-                <br><span class="stat-value" id="hudDist">---</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Цель АЗ</span>
-                <br><span class="stat-value" id="hudTargetAz">---</span>
-            </div>
+            <div class="stat-item"><span class="stat-label">Дист</span><br><span class="stat-value" id="hudDist">---</span></div>
+            <div class="stat-item"><span class="stat-label">Цель АЗ</span><br><span class="stat-value" id="hudTargetAz">---</span></div>
         </div>
         <div style="display:flex; gap:8px; flex:1; justify-content:center; align-items:center;">
             <button id="speakBtn" class="action-icon-btn">
@@ -507,74 +335,57 @@
             <button id="selectBtn">Выбрать</button>
         </div>
         <button id="nextBtn" class="nav-arrow-btn" title="Следующая точка">
-            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" fill="currentColor"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
         </button>
     </div>
 </div>
 
-<!-- Список точек -->
 <div id="pointsList">
     <div class="header">Список точек</div>
     <div id="pointsListContent"></div>
 </div>
-
-<!-- Toast -->
 <div id="toast"></div>
 
 <script>
 // ============================================
-// КОНФИГУРАЦИЯ И СОСТОЯНИЕ
+// КОНФИГУРАЦИЯ
 // ============================================
 const COLORS = {
-    Gold: { hex: '#FFD700' },
-    Blue: { hex: '#007AFF' },
-    Red: { hex: '#FF3B30' },
-    Fuchsia: { hex: '#AF52DE' },
-    Orange: { hex: '#FF9500' },
-    Purple: { hex: '#5856D6' },
-    Cyan: { hex: '#5AC8FA' },
-    Brown: { hex: '#A2845E' },
-    Lime: { hex: '#34C759' }
+    Gold: { hex: '#FFD700' }, Blue: { hex: '#007AFF' }, Red: { hex: '#FF3B30' },
+    Fuchsia: { hex: '#AF52DE' }, Orange: { hex: '#FF9500' }, Purple: { hex: '#5856D6' },
+    Cyan: { hex: '#5AC8FA' }, Brown: { hex: '#A2845E' }, Lime: { hex: '#34C759' }
 };
 
 const APP = {
-    map: null,
-    userMarker: null,
-    lastPos: null,
-    lastAz: 0,
-    autoCenter: false,
-    currentSpeed: 0,
-    
-    navPoints: [],
-    navCurrentIndex: 0,
-    navPreviewIndex: -1,  // Индекс точки в режиме предпросмотра
+    map: null, userMarker: null, lastPos: null, lastAz: 0, autoCenter: false, currentSpeed: 0,
+    navPoints: [], navCurrentIndex: 0, navPreviewIndex: -1,
     navAudio: new Audio(),
-    navConfig: { TRIGGER_DIST: 25, AZ_TOLERANCE: 45, SPEED_THRESHOLD: 2 },
-    routeName: 'Маршрут'
+    navConfig: { TRIGGER_DIST: 25, AZ_TOLERANCE: 45, SPEED_THRESHOLD: 2 }
 };
+
+const $ = id => document.getElementById(id);
 
 // ============================================
 // УВЕДОМЛЕНИЯ
 // ============================================
 function showToast(text, type = 'info', duration = 2000) {
-    const el = document.getElementById('toast');
+    const el = $('toast');
     el.textContent = text;
-    el.className = `toast ${type}`;
-    el.classList.add('show');
+    el.className = `toast ${type} show`;
     setTimeout(() => el.classList.remove('show'), duration);
 }
 
 // ============================================
-// ГЕОЛОКАЦИЯ И КАРТА
+// ГЕОЛОКАЦИЯ
 // ============================================
 function getUserLocSvg(azimuth = 0) {
-    return 'data:image/svg+xml;utf8,' + encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+    return 'data:image/svg+xml;utf8,' + encodeURIComponent(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
             <g transform="rotate(${azimuth}, 20, 20)">
                 <path d="M20,4 L32,34 L20,28 L8,34 Z" fill="#FF3B30" stroke="white" stroke-width="2"/>
             </g>
-        </svg>
-    `);
+        </svg>`
+    );
 }
 
 function calcAzimuth(p1, p2) {
@@ -589,13 +400,11 @@ function calcAzimuth(p1, p2) {
 function initGeolocation() {
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(
-            (position) => {
-                const coords = [position.coords.latitude, position.coords.longitude];
-                const speed = (position.coords.speed || 0) * 3.6;
-
-                if (APP.lastPos && speed >= APP.navConfig.SPEED_THRESHOLD) {
+            (pos) => {
+                const coords = [pos.coords.latitude, pos.coords.longitude];
+                const speed = (pos.coords.speed || 0) * 3.6;
+                if (APP.lastPos && speed >= APP.navConfig.SPEED_THRESHOLD)
                     APP.lastAz = calcAzimuth(APP.lastPos, coords);
-                }
                 APP.lastPos = coords;
                 APP.currentSpeed = speed;
 
@@ -604,22 +413,13 @@ function initGeolocation() {
                     APP.userMarker.options.set('visible', true);
                     APP.userMarker.options.set('iconImageHref', getUserLocSvg(APP.lastAz));
                 }
+                $('telSpeed').textContent = Math.round(APP.currentSpeed);
+                $('telAz').textContent = `${Math.round(APP.lastAz)}°`;
 
-                // Обновляем телеметрию
-                document.getElementById('telSpeed').textContent = Math.round(APP.currentSpeed);
-                document.getElementById('telAz').textContent = `${Math.round(APP.lastAz)}°`;
-
-                // Автоцентрирование
-                if (APP.autoCenter && APP.map) {
-                    APP.map.setCenter(coords);
-                }
-
-                // Проверка триггеров
-                if (APP.navCurrentIndex >= 0 && APP.navPreviewIndex < 0) {
-                    navCheckTriggers();
-                }
+                if (APP.autoCenter && APP.map) APP.map.setCenter(coords);
+                if (APP.navCurrentIndex >= 0 && APP.navPreviewIndex < 0) navCheckTriggers();
             },
-            (error) => console.warn('Geolocation error:', error),
+            (err) => console.warn('Geolocation error:', err),
             { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
         );
     }
@@ -627,10 +427,9 @@ function initGeolocation() {
 
 function toggleAutoCenter() {
     APP.autoCenter = !APP.autoCenter;
-    const btn = document.getElementById('locateBtn');
-    btn.classList.toggle('active', APP.autoCenter);
+    $('locateBtn').classList.toggle('active', APP.autoCenter);
     if (APP.autoCenter && APP.lastPos) APP.map.setCenter(APP.lastPos);
-    showToast(APP.autoCenter ? 'Привязка включена' : 'Привязка отключена', 'info');
+    showToast(APP.autoCenter ? 'Привязка включена' : 'Привязка отключена');
 }
 
 // ============================================
@@ -640,20 +439,17 @@ function getNavIconSvg(col, txt, az, isEnd, isCurr = false, hasComm = false) {
     const s = isEnd ? 34 : 40, c = s / 2;
     const strk = isCurr ? '#00FF00' : '#000000';
     const textColor = hasComm ? '#FF9500' : '#000000';
-    const svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="${s}" height="${s}">
-            <g transform="rotate(${az},${c},${c})">
-                <polygon points="${c},2 ${c+10},${s-5} ${c},${s-14} ${c-10},${s-5}" fill="${col}" stroke="${strk}" stroke-width="1.5"/>
-            </g>
-            <circle cx="${c}" cy="${c}" r="${isEnd ? 7 : 9}" fill="${col}" stroke="${strk}" stroke-width="1.5"/>
-            <text x="${c}" y="${c+0.5}" font-size="${isEnd ? 8 : 9}" font-family="Arial" font-weight="900" text-anchor="middle" dominant-baseline="middle" fill="${textColor}" stroke="white" stroke-width="2" style="paint-order:stroke fill">${txt}</text>
-        </svg>
-    `;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${s}" height="${s}">
+        <g transform="rotate(${az},${c},${c})">
+            <polygon points="${c},2 ${c+10},${s-5} ${c},${s-14} ${c-10},${s-5}" fill="${col}" stroke="${strk}" stroke-width="1.5"/>
+        </g>
+        <circle cx="${c}" cy="${c}" r="${isEnd ? 7 : 9}" fill="${col}" stroke="${strk}" stroke-width="1.5"/>
+        <text x="${c}" y="${c+0.5}" font-size="${isEnd ? 8 : 9}" font-family="Arial" font-weight="900" text-anchor="middle" dominant-baseline="middle" fill="${textColor}" stroke="white" stroke-width="2" style="paint-order:stroke fill">${txt}</text>
+    </svg>`;
     return 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
 }
 
 function renderRoutePoints() {
-    // Очищаем старые метки
     if (APP.map && APP.navPoints) {
         APP.navPoints.forEach(p => {
             if (p.placemark) APP.map.geoObjects.remove(p.placemark);
@@ -667,69 +463,47 @@ function renderRoutePoints() {
         const isPreview = (i === APP.navPreviewIndex);
         const isPassed = (i < APP.navCurrentIndex);
         const hasComm = p.comm && p.comm.trim() !== '';
-
-        // В режиме предпросмотра показываем только просматриваемую точку
-        // В обычном режиме показываем все точки кроме пройденных
         const showPoint = APP.navPreviewIndex >= 0 ? isPreview : (!isPassed || isCurrent);
-        // Показываем путь только у текущей и просматриваемой точки
         const showPath = isCurrent || isPreview;
 
-        if (!showPoint) {
-            return { ...p, placemark: null, line: null, endPlacemark: null, hidden: true };
-        }
+        if (!showPoint) return { ...p, placemark: null, line: null, endPlacemark: null, hidden: true };
 
-        const placemark = new ymaps.Placemark([p.lat, p.lon], {
-            pointIndex: i
-        }, {
+        const placemark = new ymaps.Placemark([p.lat, p.lon], { pointIndex: i }, {
             iconLayout: 'default#image',
             iconImageHref: getNavIconSvg(p.hex, p.id, p.az, false, isCurrent || isPreview, hasComm),
-            iconImageSize: [40, 40],
-            iconImageOffset: [-20, -20],
+            iconImageSize: [40, 40], iconImageOffset: [-20, -20],
             zIndex: (isCurrent || isPreview) ? 1000 : (isPassed ? 600 : 500),
             opacity: isPassed ? 0.5 : 1
         });
-
-        placemark.events.add('click', function(e) {
-            const index = e.get('target').properties.get('pointIndex');
-            if (index !== APP.navCurrentIndex) {
-                showPreview(index);
-            } else {
-                closePreview();
-            }
+        placemark.events.add('click', e => {
+            const idx = e.get('target').properties.get('pointIndex');
+            if (idx !== APP.navCurrentIndex) showPreview(idx);
+            else closePreview();
         });
 
         let line = null, endPlacemark = null;
         if (showPath && p.pts && p.pts.length >= 2) {
             line = new ymaps.Polyline(p.pts, {}, {
-                strokeColor: p.hex,
-                strokeWidth: isCurrent ? 4 : (isPreview ? 3 : 2),
+                strokeColor: p.hex, strokeWidth: isCurrent ? 4 : (isPreview ? 3 : 2),
                 strokeOpacity: isCurrent ? 1 : (isPreview ? 0.8 : 0.4),
-                outline: true,
-                outlineColor: '#000000',
-                outlineWidth: 1.5
+                outline: true, outlineColor: '#000000', outlineWidth: 1.5
             });
-            const last = p.pts[p.pts.length - 1];
-            const prev = p.pts[p.pts.length - 2];
+            const last = p.pts[p.pts.length - 1], prev = p.pts[p.pts.length - 2];
             endPlacemark = new ymaps.Placemark(last, {}, {
                 iconLayout: 'default#image',
                 iconImageHref: getNavIconSvg(p.hex, p.id, calcAzimuth(prev, last), true, isCurrent || isPreview, hasComm),
-                iconImageSize: [34, 34],
-                iconImageOffset: [-17, -17],
+                iconImageSize: [34, 34], iconImageOffset: [-17, -17],
                 zIndex: isCurrent ? 950 : (isPreview ? 900 : 800),
-                interactive: false,
-                opacity: isPassed ? 0.5 : 1
+                interactive: false, opacity: isPassed ? 0.5 : 1
             });
         }
-
         if (APP.map) {
             APP.map.geoObjects.add(placemark);
             if (line) APP.map.geoObjects.add(line);
             if (endPlacemark) APP.map.geoObjects.add(endPlacemark);
         }
-
         return { ...p, placemark, line, endPlacemark, hidden: false };
     });
-
     renderPointsList();
     updateHud();
 }
@@ -740,89 +514,52 @@ function updateHud() {
     const t = APP.navPoints[idx];
     if (!t) return;
 
-    document.getElementById('hudIndex').textContent = idx + 1;
-    document.getElementById('hudCmd').textContent = t.cmd;
-    document.getElementById('hudTargetAz').textContent = `${Math.round(t.az)}°`;
-    document.getElementById('speakBtn').onclick = () => playCommand(t.cmd);
+    $('hudIndex').textContent = idx + 1;
+    $('hudCmd').textContent = t.cmd;
+    $('hudTargetAz').textContent = `${Math.round(t.az)}°`;
+    $('speakBtn').onclick = () => playCommand(t.cmd);
 
-    // Показываем/скрываем кнопку "Выбрать" и статистику
-    const selectBtn = document.getElementById('selectBtn');
-    const hudStats = document.querySelector('.hud-stats');
-    if (isPreview) {
-        selectBtn.style.display = 'flex';
-        selectBtn.onclick = () => { setTarget(idx); };
-        hudStats.style.display = 'none';
-    } else {
-        selectBtn.style.display = 'none';
-        hudStats.style.display = 'flex';
-    }
+    $('selectBtn').style.display = isPreview ? 'flex' : 'none';
+    if (isPreview) $('selectBtn').onclick = () => setTarget(idx);
+    document.querySelector('.hud-stats').style.display = isPreview ? 'none' : 'flex';
 
-    // Обновляем состояние кнопок навигации
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = $('prevBtn'), nextBtn = $('nextBtn');
     prevBtn.disabled = (idx <= 0);
     nextBtn.disabled = (idx >= APP.navPoints.length - 1);
+    prevBtn.onclick = () => idx > 0 && showPreview(idx - 1);
+    nextBtn.onclick = () => idx < APP.navPoints.length - 1 && showPreview(idx + 1);
 
-    prevBtn.onclick = () => {
-        if (idx > 0) showPreview(idx - 1);
-    };
-
-    nextBtn.onclick = () => {
-        if (idx < APP.navPoints.length - 1) showPreview(idx + 1);
-    };
-
-    // Комментарий
-    const commentBlock = document.getElementById('commentBlock');
-    const commentText = document.getElementById('commentText');
     const hasComm = t.comm && t.comm.trim() !== '';
-
-    if (hasComm) {
-        commentText.textContent = t.comm;
-        commentBlock.classList.add('visible');
-    } else {
-        commentBlock.classList.remove('visible');
-    }
+    $('commentText').textContent = t.comm;
+    $('commentBlock').classList.toggle('visible', hasComm);
 }
 
 function updateHudDist(d, ad) {
-    const t = APP.navPoints[APP.navCurrentIndex];
-    if (!t) return;
-    document.getElementById('hudDist').textContent = `${Math.round(d)}м`;
-    document.getElementById('hudDist').classList.toggle('in-range', d <= APP.navConfig.TRIGGER_DIST);
-    document.getElementById('hudTargetAz').classList.toggle('in-range', ad <= APP.navConfig.AZ_TOLERANCE);
+    $('hudDist').textContent = `${Math.round(d)}м`;
+    $('hudDist').classList.toggle('in-range', d <= APP.navConfig.TRIGGER_DIST);
+    $('hudTargetAz').classList.toggle('in-range', ad <= APP.navConfig.AZ_TOLERANCE);
 }
 
-// Показать точку в режиме предпросмотра
 function showPreview(i) {
     const p = APP.navPoints[i];
     if (!p) return;
-
-    // Закрываем список точек если открыт
-    document.getElementById('pointsList').style.display = 'none';
-
+    $('pointsList').style.display = 'none';
     APP.navPreviewIndex = i;
     updateHud();
     renderRoutePoints();
 
-    // Центрирование и масштабирование карты для показа всего пути точки
     if (p.pts && p.pts.length >= 2) {
         let minLat = p.pts[0][0], maxLat = p.pts[0][0];
         let minLon = p.pts[0][1], maxLon = p.pts[0][1];
-
         for (let pt of p.pts) {
             if (pt[0] < minLat) minLat = pt[0];
             if (pt[0] > maxLat) maxLat = pt[0];
             if (pt[1] < minLon) minLon = pt[1];
             if (pt[1] > maxLon) maxLon = pt[1];
         }
-
         const centerLat = (minLat + maxLat) / 2;
         const centerLon = (minLon + maxLon) / 2;
-        const padding = 0.00001;
-        const latDiff = maxLat - minLat + padding * 2;
-        const lonDiff = maxLon - minLon + padding * 2;
-        const maxDiff = Math.max(latDiff, lonDiff);
-
+        const maxDiff = Math.max(maxLat - minLat, maxLon - minLon) + 0.00002;
         let zoom = 17;
         if (maxDiff > 0.05) zoom = 13;
         else if (maxDiff > 0.02) zoom = 14;
@@ -834,27 +571,22 @@ function showPreview(i) {
         else zoom = 20;
 
         APP.map.panTo([centerLat, centerLon], {
-            flying: true,
-            duration: 500,
-            callback: function() {
-                APP.map.setZoom(zoom, { duration: 300 });
-            }
+            flying: true, duration: 500,
+            callback: () => APP.map.setZoom(zoom, { duration: 300 })
         });
     } else if (p.lat && p.lon) {
         APP.map.setCenter([p.lat, p.lon], 17);
     }
 }
 
-// Установить целевую точку
 function setTarget(i) {
     APP.navCurrentIndex = i;
     APP.navPreviewIndex = -1;
     renderRoutePoints();
     updateHud();
-    document.getElementById('pointsList').style.display = 'none';
+    $('pointsList').style.display = 'none';
 }
 
-// Закрыть предпросмотр
 function closePreview() {
     APP.navPreviewIndex = -1;
     renderRoutePoints();
@@ -862,38 +594,36 @@ function closePreview() {
 }
 
 function renderPointsList() {
-    const list = document.getElementById('pointsListContent');
+    const list = $('pointsListContent');
     if (!list) return;
-
     list.innerHTML = APP.navPoints.map((p, i) => {
         const isPassed = i < APP.navCurrentIndex;
         const isCurrent = i === APP.navCurrentIndex;
         const isPreview = i === APP.navPreviewIndex;
         const cmdSafe = p.cmd.replace(/'/g, "\\'");
         const hasComm = p.comm && p.comm.trim() !== '';
-        return `
-            <div class="point-item ${isCurrent || isPreview ? 'active' : ''}" onclick="showPreview(${i});" style="${isPassed && !isPreview ? 'opacity:0.4;' : ''}">
-                <div class="point-badge" style="${isCurrent ? 'background:#00FF00;color:black' : (isPreview ? 'background:rgba(61,160,255,0.6);color:black' : (isPassed ? 'background:rgba(255,255,255,0.2)' : ''))}">${p.id}</div>
-                <div class="point-content">
-                    <div class="point-name" style="display:flex; align-items:center; gap:6px;">
-                        ${p.cmd}
-                        ${hasComm ? '<span style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; background:rgba(255,149,0,0.9); border-radius:50%; color:#fff; font-size:13px; font-weight:800; flex-shrink:0;">i</span>' : ''}
-                    </div>
+        const badgeStyle = isCurrent ? 'background:#00FF00;color:black' :
+                          isPreview ? 'background:rgba(61,160,255,0.6);color:black' :
+                          isPassed ? 'background:rgba(255,255,255,0.2)' : '';
+        return `<div class="point-item ${isCurrent || isPreview ? 'active' : ''}" onclick="showPreview(${i});" style="${isPassed && !isPreview ? 'opacity:0.4;' : ''}">
+            <div class="point-badge" style="${badgeStyle}">${p.id}</div>
+            <div class="point-content">
+                <div class="point-name" style="display:flex; align-items:center; gap:6px;">
+                    ${p.cmd}
+                    ${hasComm ? '<span style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; background:rgba(255,149,0,0.9); border-radius:50%; color:#fff; font-size:13px; font-weight:800; flex-shrink:0;">i</span>' : ''}
                 </div>
-                <button class="action-icon-btn" onclick="event.stopPropagation(); playCommand('${cmdSafe}');">
-                    <svg viewBox="0 0 24 24" width="20" height="20"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" fill="#f3f4f6"/></svg>
-                </button>
             </div>
-        `;
+            <button class="action-icon-btn" onclick="event.stopPropagation(); playCommand('${cmdSafe}');">
+                <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+            </button>
+        </div>`;
     }).join('');
 }
 
 function togglePointsList() {
-    const menu = document.getElementById('pointsList');
+    const menu = $('pointsList');
     menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-    if (menu.style.display === 'flex') {
-        renderPointsList();
-    }
+    if (menu.style.display === 'flex') renderPointsList();
 }
 
 // ============================================
@@ -902,8 +632,7 @@ function togglePointsList() {
 function getAudioPath(text) {
     if (!text) return null;
     const normalized = text.normalize('NFC').toLowerCase()
-        .replace(/[.,\/#!$%\^&\*;:{}=\-`~()]/g, "")
-        .trim()
+        .replace(/[.,\/#!$%\^&\*;:{}=\-`~()]/g, "").trim()
         .replace(/\s+/g, '_');
     return `audio/${encodeURIComponent(normalized)}.mp3`;
 }
@@ -911,70 +640,51 @@ function getAudioPath(text) {
 async function playCommand(text) {
     const path = getAudioPath(text);
     if (!path) return;
-    
     APP.navAudio.pause();
-    
     if ('caches' in window) {
         try {
             const cache = await caches.open('route-audio-v1');
-            const cachedResponse = await cache.match(path);
-            if (cachedResponse) {
-                const blob = await cachedResponse.blob();
-                APP.navAudio.src = URL.createObjectURL(blob);
-                APP.navAudio.play().catch(e => console.error("Cached play error", e));
+            const cached = await cache.match(path);
+            if (cached) {
+                APP.navAudio.src = URL.createObjectURL(await cached.blob());
+                APP.navAudio.play().catch(e => console.error(e));
                 return;
             }
-        } catch (e) {
-            console.warn("Cache error:", e);
-        }
+        } catch (e) { console.warn("Cache error:", e); }
     }
-    
     APP.navAudio.src = path;
-    APP.navAudio.play().catch((err) => console.warn("Audio play failed:", err));
+    APP.navAudio.play().catch(e => console.warn("Audio play failed:", e));
 }
 
 async function preloadAudio() {
-    if (!('caches' in window)) {
-        showToast('Готов к работе', 'success');
-        return;
-    }
-
+    if (!('caches' in window)) { showToast('Готов к работе', 'success'); return; }
     showToast('Загрузка аудио...', 'info');
     const cache = await caches.open('route-audio-v1');
     const uniquePaths = [...new Set(APP.navPoints.map(p => getAudioPath(p.cmd)).filter(p => p))];
-
-    if (uniquePaths.length === 0) {
-        showToast('Готов к работе', 'success');
-        return;
-    }
+    if (uniquePaths.length === 0) { showToast('Готов к работе', 'success'); return; }
 
     let loaded = 0;
     for (const path of uniquePaths) {
         try {
-            const response = await fetch(path);
-            if (response.ok) await cache.put(path, response);
+            const res = await fetch(path);
+            if (res.ok) await cache.put(path, res);
         } catch (e) { console.warn("Failed to cache:", path); }
-        loaded++;
-        const percent = Math.round((loaded / uniquePaths.length) * 100);
-        showToast(`Аудио: ${percent}%`, 'info');
+        showToast(`Аудио: ${Math.round((++loaded / uniquePaths.length) * 100)}%`, 'info');
     }
-
     showToast('Готов к работе', 'success');
 }
 
 // ============================================
-// ПРОВЕРКА ТРИГГЕРОВ
+// ТРИГГЕРЫ
 // ============================================
 function navCheckTriggers() {
     if (APP.navCurrentIndex < 0 || !APP.lastPos || !APP.navPoints[APP.navCurrentIndex]) return;
-    
     const t = APP.navPoints[APP.navCurrentIndex];
     const d = ymaps.coordSystem.geo.getDistance(APP.lastPos, [t.lat, t.lon]);
     let ad = Math.abs(APP.lastAz - t.az) % 360;
     if (ad > 180) ad = 360 - ad;
-    
     updateHudDist(d, ad);
-    
+
     if (d <= APP.navConfig.TRIGGER_DIST && ad <= APP.navConfig.AZ_TOLERANCE) {
         playCommand(t.cmd);
         APP.navCurrentIndex++;
@@ -983,7 +693,7 @@ function navCheckTriggers() {
             renderRoutePoints();
             updateHud();
         } else {
-            document.getElementById('hudCmd').textContent = "ФИНИШ";
+            $('hudCmd').textContent = "ФИНИШ";
             showToast('Маршрут завершён!', 'success');
         }
     }
@@ -995,75 +705,88 @@ function navCheckTriggers() {
 async function loadRouteFromUrl(url) {
     try {
         showToast('Загрузка маршрута...', 'info');
+        console.log('Загрузка URL:', url);
         const res = await fetch(url);
+        console.log('Ответ:', res.status, res.ok);
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const data = await res.json();
+        console.log('Данные:', data);
         processRouteData(data, url.split('/').pop().replace('.json', ''));
     } catch (e) {
+        console.error('Ошибка загрузки:', e);
         showToast('Ошибка загрузки: ' + e.message, 'error', 4000);
     }
 }
 
-function loadRouteFromText(jsonText) {
+function loadRouteFromText(text) {
     try {
-        const data = JSON.parse(jsonText);
+        console.log('Парсинг JSON:', text.substring(0, 100) + '...');
+        const data = JSON.parse(text);
+        console.log('Данные:', data);
         processRouteData(data, 'Пользовательский маршрут');
     } catch (e) {
+        console.error('Ошибка JSON:', e);
         showToast('Ошибка JSON: ' + e.message, 'error', 4000);
     }
 }
 
 function processRouteData(data, name) {
+    console.log('processRouteData:', { data, name });
+    
+    if (!data || !Array.isArray(data)) {
+        throw new Error('Неверный формат данных: ожидается массив');
+    }
+    if (data.length === 0) {
+        throw new Error('Маршрут пуст');
+    }
+    
     APP.navPoints = data.map((d, i) => {
         const pts = d.pts || [];
+        if (!pts || pts.length === 0) {
+            console.warn('Точка ' + i + ' без координат, пропускаем');
+            return null;
+        }
         return {
-            id: d.id || (i + 1),
-            lat: pts[0]?.[0],
-            lon: pts[0]?.[1],
-            color: d.color,
-            hex: COLORS[d.color]?.hex || '#007AFF',
+            id: d.id || (i + 1), lat: pts[0]?.[0], lon: pts[0]?.[1],
+            color: d.color, hex: COLORS[d.color]?.hex || '#007AFF',
             cmd: (d.cmd || d.comm || `Т${i + 1}`).trim(),
-            comm: d.comm || '',
-            pts: pts,
+            comm: d.comm || '', pts: pts,
             az: pts.length >= 2 ? calcAzimuth(pts[0], pts[1]) : 0
         };
-    });
-
+    }).filter(p => p !== null);
+    
+    console.log('Обработано точек:', APP.navPoints.length);
+    
+    if (APP.navPoints.length === 0) {
+        throw new Error('Нет валидных точек в маршруте');
+    }
+    
     APP.navCurrentIndex = 0;
     APP.navPreviewIndex = -1;
-    APP.routeName = name;
 
-    // Показываем UI
-    document.getElementById('hud').classList.add('active');
-    document.getElementById('telemetryPanel').classList.add('visible');
-    document.getElementById('jsonModal').classList.add('hidden');
-    document.getElementById('loading').classList.add('hidden');
+    $('hud').classList.add('active');
+    $('telemetryPanel').classList.add('visible');
+    $('jsonModal').classList.add('hidden');
+    $('loading').classList.add('hidden');
 
     renderRoutePoints();
     updateHud();
 
-    // Центрируем карту
     if (APP.navPoints.length > 0 && APP.map) {
         setTimeout(() => {
             const bounds = APP.map.geoObjects.getBounds();
-            if (bounds) {
-                APP.map.setBounds(bounds, { zoomMargin: 80 });
-            }
+            if (bounds) APP.map.setBounds(bounds, { zoomMargin: 80 });
         }, 100);
     }
-
-    // Кэшируем аудио
     preloadAudio();
-
     showToast(`Маршрут загружен: ${name}`, 'success');
 }
 
 // ============================================
 // WAKE LOCK
 // ============================================
-const v = document.getElementById('v');
+const v = $('v');
 let wl = null;
-
 const wake = async () => {
     if (APP.navAudio.paused) {
         APP.navAudio.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==";
@@ -1071,92 +794,65 @@ const wake = async () => {
     }
     if (wl) { try { await wl.release(); } catch(e) {} wl = null; }
     if ('wakeLock' in navigator) {
-        try {
-            wl = await navigator.wakeLock.request('screen');
-            console.log('Wake Lock активирован');
-        } catch(e) {
-            console.log('Wake Lock ошибка:', e.name, e.message);
-        }
+        try { wl = await navigator.wakeLock.request('screen'); }
+        catch(e) { console.log('Wake Lock error:', e.name); }
     }
     if (!v.src) v.src = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21hdmMxbXA0MgAAAAhmcmVlAAAALm1kYXQAAAHvYXZjQwFQAFr/4AAZAWgAVv/AAB9AAAADAAIAAAMAHBDeEAEABWj/gAAAAA5ieHRyY3Rsc3RyYmMAAAALYm9vdnNoZHIAAAADbXZoZAAAAAAAAAAAAAAAAAAAA+gAAAPoAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAACAGlzb21hdmMxbXA0MgAAAAhmcmVlAAAALm1kYXQ=";
     v.play().catch(()=>{});
 };
-
 document.addEventListener('click', wake);
 document.addEventListener('touchstart', wake);
-document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && wl) wake();
-});
+document.addEventListener('visibilitychange', () => { if (!document.hidden && wl) wake(); });
 
 // ============================================
 // ИНИЦИАЛИЗАЦИЯ
 // ============================================
 ymaps.ready(() => {
-    // Инициализация карты
     APP.map = new ymaps.Map('map', {
-        center: [56.3399, 43.9332],
-        zoom: 17,
-        type: 'yandex#satellite',
-        controls: []
+        center: [56.3399, 43.9332], zoom: 17,
+        type: 'yandex#satellite', controls: []
     });
 
     APP.userMarker = new ymaps.Placemark([0, 0], {}, {
         iconLayout: 'default#image',
         iconImageHref: getUserLocSvg(0),
-        iconImageSize: [40, 40],
-        iconImageOffset: [-20, -20],
-        zIndex: 5000,
-        visible: false
+        iconImageSize: [40, 40], iconImageOffset: [-20, -20],
+        zIndex: 5000, visible: false
     });
     APP.map.geoObjects.add(APP.userMarker);
-
     initGeolocation();
 
-    // Обработчики UI
-    document.getElementById('listBtn').addEventListener('click', togglePointsList);
-    document.getElementById('locateBtn').addEventListener('click', toggleAutoCenter);
-    document.getElementById('closeCommentBtn').addEventListener('click', (e) => {
+    // Обработчики
+    $('listBtn').addEventListener('click', togglePointsList);
+    $('locateBtn').addEventListener('click', toggleAutoCenter);
+    $('closeCommentBtn').addEventListener('click', e => {
         e.stopPropagation();
-        document.getElementById('commentBlock').classList.remove('visible');
+        $('commentBlock').classList.remove('visible');
     });
-
-    // Обработчики модального окна
-    document.getElementById('loadUrlBtn').addEventListener('click', () => {
-        const url = document.getElementById('jsonUrlInput').value.trim();
-        if (!url) {
-            showToast('Введите URL', 'error');
-            return;
-        }
+    $('loadUrlBtn').addEventListener('click', () => {
+        const url = $('jsonUrlInput').value.trim();
+        if (!url) { showToast('Введите URL', 'error'); return; }
         loadRouteFromUrl(url);
     });
-
-    document.getElementById('loadTextBtn').addEventListener('click', () => {
-        const text = document.getElementById('jsonTextInput').value.trim();
-        if (!text) {
-            showToast('Вставьте JSON', 'error');
-            return;
-        }
+    $('loadTextBtn').addEventListener('click', () => {
+        const text = $('jsonTextInput').value.trim();
+        if (!text) { showToast('Вставьте JSON', 'error'); return; }
         loadRouteFromText(text);
     });
 
-    // Обработчик клика по карте - закрываем предпросмотр
-    APP.map.events.add('click', (e) => {
-        // Закрываем предпросмотр при клике на карту
+    // Клик по карте
+    APP.map.events.add('click', () => {
         closePreview();
-        // Закрываем список точек
-        document.getElementById('pointsList').style.display = 'none';
+        $('pointsList').style.display = 'none';
     });
 
-    // Проверяем URL параметр
-    const urlParams = new URLSearchParams(window.location.search);
-    const jsonUrl = urlParams.get('url');
+    // URL параметр
+    const jsonUrl = new URLSearchParams(window.location.search).get('url');
     if (jsonUrl) {
-        document.getElementById('jsonUrlInput').value = jsonUrl;
+        $('jsonUrlInput').value = jsonUrl;
         loadRouteFromUrl(jsonUrl);
     }
-
-    // Скрываем загрузочный экран если уже есть данные
-    document.getElementById('loading').classList.add('hidden');
+    $('loading').classList.add('hidden');
 });
 </script>
 </body>
