@@ -462,9 +462,14 @@ function renderRoutePoints() {
         const isCurrent = (i === APP.navCurrentIndex);
         const isPreview = (i === APP.navPreviewIndex);
         const isPassed = (i < APP.navCurrentIndex);
+        const isPrevious = (i === APP.navCurrentIndex - 1);  // Предыдущая точка
         const hasComm = p.comm && p.comm.trim() !== '';
-        const showPoint = APP.navPreviewIndex >= 0 ? isPreview : (!isPassed || isCurrent);
-        const showPath = isCurrent || isPreview;
+        
+        // В режиме предпросмотра показываем только просматриваемую точку
+        // В обычном режиме показываем все точки кроме пройденных (кроме предыдущей)
+        const showPoint = APP.navPreviewIndex >= 0 ? isPreview : (!isPassed || isCurrent || isPrevious);
+        // Показываем путь только у текущей, предыдущей и просматриваемой точки
+        const showPath = isCurrent || isPreview || isPrevious;
 
         if (!showPoint) return { ...p, placemark: null, line: null, endPlacemark: null, hidden: true };
 
@@ -472,8 +477,8 @@ function renderRoutePoints() {
             iconLayout: 'default#image',
             iconImageHref: getNavIconSvg(p.hex, p.id, p.az, false, isCurrent || isPreview, hasComm),
             iconImageSize: [40, 40], iconImageOffset: [-20, -20],
-            zIndex: (isCurrent || isPreview) ? 1000 : (isPassed ? 600 : 500),
-            opacity: isPassed ? 0.5 : 1
+            iconOpacity: isPreview ? 1 : (isPrevious ? 0.5 : (isPassed ? 0.3 : 1)),
+            zIndex: (isCurrent || isPreview) ? 1000 : (isPassed ? 600 : 500)
         });
         placemark.events.add('click', e => {
             const idx = e.get('target').properties.get('pointIndex');
@@ -484,8 +489,9 @@ function renderRoutePoints() {
         let line = null, endPlacemark = null;
         if (showPath && p.pts && p.pts.length >= 2) {
             line = new ymaps.Polyline(p.pts, {}, {
-                strokeColor: p.hex, strokeWidth: isCurrent ? 4 : (isPreview ? 3 : 2),
-                strokeOpacity: isCurrent ? 1 : (isPreview ? 0.8 : 0.4),
+                strokeColor: p.hex,
+                strokeWidth: isCurrent ? 4 : (isPreview || isPrevious ? 3 : 2),
+                strokeOpacity: isCurrent ? 1 : (isPreview ? 0.8 : (isPrevious ? 0.5 : 0.4)),
                 outline: true, outlineColor: '#000000', outlineWidth: 1.5
             });
             const last = p.pts[p.pts.length - 1], prev = p.pts[p.pts.length - 2];
@@ -493,8 +499,9 @@ function renderRoutePoints() {
                 iconLayout: 'default#image',
                 iconImageHref: getNavIconSvg(p.hex, p.id, calcAzimuth(prev, last), true, isCurrent || isPreview, hasComm),
                 iconImageSize: [34, 34], iconImageOffset: [-17, -17],
-                zIndex: isCurrent ? 950 : (isPreview ? 900 : 800),
-                interactive: false, opacity: isPassed ? 0.5 : 1
+                iconOpacity: isPreview ? 1 : (isPrevious ? 0.5 : (isPassed ? 0.3 : 1)),
+                zIndex: isCurrent ? 950 : (isPrevious ? 900 : 800),
+                interactive: false
             });
         }
         if (APP.map) {
@@ -600,12 +607,15 @@ function renderPointsList() {
         const isPassed = i < APP.navCurrentIndex;
         const isCurrent = i === APP.navCurrentIndex;
         const isPreview = i === APP.navPreviewIndex;
+        const isPrevious = i === APP.navCurrentIndex - 1;
         const cmdSafe = p.cmd.replace(/'/g, "\\'");
         const hasComm = p.comm && p.comm.trim() !== '';
         const badgeStyle = isCurrent ? 'background:#00FF00;color:black' :
                           isPreview ? 'background:rgba(61,160,255,0.6);color:black' :
+                          isPrevious ? 'background:rgba(255,255,255,0.5);color:black' :
                           isPassed ? 'background:rgba(255,255,255,0.2)' : '';
-        return `<div class="point-item ${isCurrent || isPreview ? 'active' : ''}" onclick="showPreview(${i});" style="${isPassed && !isPreview ? 'opacity:0.4;' : ''}">
+        const opacity = isPrevious ? 0.6 : (isPassed && !isPreview ? 0.4 : 1);
+        return `<div class="point-item ${isCurrent || isPreview ? 'active' : ''}" onclick="showPreview(${i});" style="opacity:${opacity}">
             <div class="point-badge" style="${badgeStyle}">${p.id}</div>
             <div class="point-content">
                 <div class="point-name" style="display:flex; align-items:center; gap:6px;">
