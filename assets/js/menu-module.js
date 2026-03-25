@@ -1,20 +1,17 @@
 /**
- * Route Loader Module
- * Модуль загрузки маршрута через модальное окно
+ * Menu Button Module
+ * Модуль кнопки меню для загрузки маршрутов
  */
 
-const RouteLoader = {
-    container: null,
+const MenuModule = {
     callback: null,
-    onMenuClick: null,
-    isLoaded: false,  // Флаг загрузки первого маршрута
+    isLoaded: false,
     
     // Инициализация
-    init(onRouteLoaded, onMenuClickCallback = null) {
+    init(onRouteLoaded) {
         this.callback = onRouteLoaded;
-        this.onMenuClick = onMenuClickCallback;
         this.createModal();
-        this.createMenuButton();
+        this.createButton();
         this.hide();  // Скрываем модальное окно при инициализации
         this.checkUrlParam();
     },
@@ -25,8 +22,8 @@ const RouteLoader = {
             <div id="jsonModal">
                 <div class="modal-sheet">
                     <div class="modal-title">Введите название маршрута</div>
-                    <input type="text" id="routeNameInput" class="modal-input" placeholder="" style="margin-top: 16px;">
-                    <div class="modal-buttons" style="margin-top: 16px; display: flex; gap: 8px;">
+                    <input type="text" id="routeNameInput" class="modal-input" placeholder="">
+                    <div class="modal-buttons">
                         <button id="cancelBtn" class="modal-btn modal-btn-muted">Отмена</button>
                         <button id="loadRouteBtn" class="modal-btn modal-btn-green">Загрузить</button>
                     </div>
@@ -34,7 +31,6 @@ const RouteLoader = {
             </div>
         `;
         
-        // Вставляем после загрузочного экрана
         const loading = document.getElementById('loading');
         if (loading) {
             loading.insertAdjacentHTML('afterend', html);
@@ -59,7 +55,7 @@ const RouteLoader = {
             this.hide();
         });
         
-        // Обработчик Enter в поле ввода
+        // Обработчик Enter
         document.getElementById('routeNameInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 document.getElementById('loadRouteBtn').click();
@@ -68,15 +64,16 @@ const RouteLoader = {
     },
     
     // Создание кнопки меню
-    createMenuButton() {
+    createButton() {
         const html = `
             <button id="menuBtn" class="circle-btn">
-                <svg viewBox="0 0 24 24" width="20" height="20"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill="currentColor"/>
+                </svg>
                 <span>Меню</span>
             </button>
         `;
         
-        // Вставляем после загрузочного экрана
         const loading = document.getElementById('loading');
         if (loading) {
             loading.insertAdjacentHTML('afterend', html);
@@ -84,9 +81,8 @@ const RouteLoader = {
             document.body.insertAdjacentHTML('afterbegin', html);
         }
         
-        // Навешиваем обработчик
+        // Обработчик клика
         document.getElementById('menuBtn').addEventListener('click', () => {
-            // Показываем модальное окно для загрузки нового маршрута
             this.show();
             document.getElementById('routeNameInput').value = '';
             document.getElementById('routeNameInput').focus();
@@ -97,17 +93,15 @@ const RouteLoader = {
     checkUrlParam() {
         const routeParam = new URLSearchParams(window.location.search).get('m');
         if (routeParam) {
-            // Скрываем модальное окно и загружаем маршрут
             this.isLoaded = true;
             this.hide();
             this.loadRoute(routeParam);
         }
-        // Если параметра нет - ничего не показываем, ждём нажатия кнопки меню
     },
     
     // Загрузка маршрута
     loadRoute(routeName) {
-        // Очищаем предыдущий маршрут с карты
+        // Очищаем предыдущий маршрут
         if (typeof clearRoute === 'function') {
             clearRoute();
         }
@@ -129,17 +123,5 @@ const RouteLoader = {
     show() {
         const modal = document.getElementById('jsonModal');
         if (modal) modal.classList.remove('hidden');
-    },
-    
-    // Скрыть кнопку меню
-    hideMenu() {
-        const btn = document.getElementById('menuBtn');
-        if (btn) btn.style.display = 'none';
-    },
-    
-    // Показать кнопку меню
-    showMenu() {
-        const btn = document.getElementById('menuBtn');
-        if (btn) btn.style.display = 'flex';
     }
 };

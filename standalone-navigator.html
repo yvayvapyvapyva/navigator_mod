@@ -5,7 +5,8 @@
     <title>Навигатор - Маршрут</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <script src="https://api-maps.yandex.ru/2.1/?apikey=YANDEX_API_KEY&lang=ru_RU&suppressMapOpenBlock=true"></script>
-    <script src="assets/js/route-loader.js"></script>
+    <link rel="stylesheet" href="assets/css/menu-module.css">
+    <script src="assets/js/menu-module.js"></script>
     <style>
     :root {
         --bg: #050505;
@@ -51,19 +52,6 @@
     .circle-btn svg { fill: currentColor; width: 24px; height: 24px; }
     .circle-btn:active { transform: scale(0.95); background: rgba(30,32,40,0.9); }
     .circle-btn.active { background: rgba(52,199,89,0.42); border-color: rgba(103,255,153,0.45); }
-    
-    /* Кнопка меню - овальная */
-    #menuBtn {
-        position: absolute;
-        top: calc(16px + env(safe-area-inset-top));
-        left: 50%;
-        transform: translateX(-50%);
-        width: auto; padding: 0 16px; border-radius: 100px;
-        height: 56px; gap: 8px;
-    }
-    #menuBtn svg { flex-shrink: 0; }
-    #menuBtn span { font-size: 13px; font-weight: 700; white-space: nowrap; }
-    
     #listBtn { top: calc(16px + env(safe-area-inset-top)); left: 16px; }
     #locateBtn { top: calc(16px + env(safe-area-inset-top)); right: 16px; }
 
@@ -237,69 +225,6 @@
 
     /* Wake lock */
     #v { position: fixed; width: 1px; height: 1px; opacity: 0.01; pointer-events: none; }
-
-    /* Модальное окно - панель сверху */
-    #jsonModal {
-        position: fixed;
-        top: calc(16px + env(safe-area-inset-top));
-        left: 50%;
-        transform: translateX(-50%) translateY(-100px);
-        z-index: 10000;
-        display: flex;
-        opacity: 0;
-        pointer-events: none;
-        transition: transform 0.3s, opacity 0.3s;
-    }
-    #jsonModal.hidden {
-        transform: translateX(-50%) translateY(-100px);
-        opacity: 0;
-        pointer-events: none;
-    }
-    #jsonModal:not(.hidden) {
-        transform: translateX(-50%) translateY(0);
-        opacity: 1;
-        pointer-events: auto;
-    }
-    .modal-sheet {
-        width: 90%;
-        max-width: 400px;
-        background: var(--dark-panel);
-        backdrop-filter: var(--panel-blur);
-        -webkit-backdrop-filter: var(--panel-blur);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-    }
-    .modal-title { font-size: 16px; font-weight: 800; text-align: center; color: #fff; }
-    .modal-textarea {
-        width: 100%; min-height: 200px;
-        background: rgba(40,42,50,0.5); border: 1px solid var(--border);
-        border-radius: 12px; padding: 14px; color: #fff;
-        font-size: 13px; font-family: monospace; resize: vertical;
-        box-sizing: border-box; outline: none;
-    }
-    .modal-input {
-        width: 100%; padding: 14px; border-radius: 12px;
-        border: 1px solid var(--border); background: rgba(40,42,50,0.5);
-        color: #fff; font-size: 14px; font-family: inherit;
-        box-sizing: border-box; outline: none;
-    }
-    .modal-hint { font-size: 12px; color: rgba(255,255,255,0.5); }
-    .modal-buttons { display: flex; gap: 12px; margin-top: 8px; }
-    .modal-btn {
-        flex: 1; padding: 14px; border-radius: 12px; border: none;
-        font-size: 15px; font-weight: 700; cursor: pointer;
-        transition: transform 0.15s;
-    }
-    .modal-btn:active { transform: scale(0.98); }
-    .modal-btn-green { background: rgba(52,199,89,0.42); border: 1px solid rgba(103,255,153,0.45); color: #fff; }
-    .modal-btn-blue { background: rgba(61,160,255,0.48); border: 1px solid rgba(90,180,255,0.5); color: #fff; }
-    .modal-btn-muted { background: rgba(40,40,45,0.3); border: 1px solid var(--border); color: #fff; }
-    .or-divider { text-align: center; font-size: 12px; color: rgba(255,255,255,0.5); margin: 8px 0; }
     </style>
 </head>
 <body>
@@ -908,8 +833,8 @@ ymaps.ready(() => {
         $('pointsList').style.display = 'none';
     });
 
-    // Инициализация загрузчика маршрутов
-    RouteLoader.init(loadRouteFromCloud);
+    // Инициализация модуля меню
+    MenuModule.init(loadRouteFromCloud);
     
     $('loading').classList.add('hidden');
 });
