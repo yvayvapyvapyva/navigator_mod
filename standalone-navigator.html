@@ -5,6 +5,7 @@
     <title>Навигатор - Маршрут</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <script src="https://api-maps.yandex.ru/2.1/?apikey=YANDEX_API_KEY&lang=ru_RU&suppressMapOpenBlock=true"></script>
+    <script src="assets/js/route-loader.js"></script>
     <style>
     :root {
         --bg: #050505;
@@ -274,16 +275,6 @@
 <div id="loading" class="loading-overlay">
     <div id="loadingText">ЗАГРУЗКА...</div>
     <div id="errorMsg" style="color: #FF3B30; display: none; margin-top: 10px;"></div>
-</div>
-
-<div id="jsonModal">
-    <div class="modal-sheet">
-        <div class="modal-title">Введите название маршрута</div>
-        <input type="text" id="routeNameInput" class="modal-input" placeholder="" style="margin-top: 16px;">
-        <div class="modal-buttons" style="margin-top: 16px;">
-            <button id="loadRouteBtn" class="modal-btn modal-btn-green">Загрузить</button>
-        </div>
-    </div>
 </div>
 
 <video id="v" playsinline muted loop></video>
@@ -861,11 +852,6 @@ ymaps.ready(() => {
         e.stopPropagation();
         $('commentBlock').classList.remove('visible');
     });
-    $('loadRouteBtn').addEventListener('click', () => {
-        const routeName = $('routeNameInput').value.trim();
-        if (!routeName) { showToast('Введите название маршрута', 'error'); return; }
-        loadRouteFromCloud(routeName);
-    });
 
     // Клик по карте
     APP.map.events.add('click', () => {
@@ -873,11 +859,9 @@ ymaps.ready(() => {
         $('pointsList').style.display = 'none';
     });
 
-    // URL параметр m - автоматическая загрузка маршрута
-    const routeParam = new URLSearchParams(window.location.search).get('m');
-    if (routeParam) {
-        loadRouteFromCloud(routeParam);
-    }
+    // Инициализация загрузчика маршрутов
+    RouteLoader.init(loadRouteFromCloud);
+    
     $('loading').classList.add('hidden');
 });
 </script>
